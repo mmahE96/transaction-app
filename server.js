@@ -16,8 +16,7 @@ const shop = new Ledger();
 
 app.post("/createwallet", (req, res) => {
     const owner = req.body.owner;
-    const {INITIAL_BALANCE} = config;
- 
+    const {INITIAL_BALANCE} = config; 
     const newWallet = new Wallet(owner, INITIAL_BALANCE);
     shop.addWallet(newWallet);
     res.send(shop);
@@ -31,27 +30,37 @@ app.post("/getuser", (req, res) => {
 
    res.send(`Username: ${owner}
              Address:  ${address}`);
-
    }else{
        res.send("No user with that name!")
-   }
-    
+   }   
     
 })
 
-app.post("/sendtokens", (req, res) => {
+app.post("/getpending", (req, res) => {
+    const owner = req.body.owner
 
+    
+    res.send(shop.getPending(owner))
+
+})
+
+app.post("/sendtokens", (req, res) => {
     
         const {amount, senderAddress, recipientAddress} = req.body;
 
+        if(shop.checkUsers(amount, senderAddress, recipientAddress)){
+
         shop.sendTokens(amount, senderAddress, recipientAddress);
+                        
 
-        console.log(shop.wallets);                  
-
-        const transaction =new Transaction("1", amount, senderAddress, recipientAddress, "new");
+        const transaction =new Transaction("1", amount, senderAddress, recipientAddress, "new", "pending");
         shop.transactions.push(transaction)
 
         res.send(shop)
+    
+    }else{
+        res.send("Transaction not possible")
+    }
 
     //using user address you can send tokens to his wallet
     //in ledger is shown only address, and amount not username
@@ -63,7 +72,6 @@ app.post("/sendtokens", (req, res) => {
 app.get("/getbalance", (req, res) => {
 
     shop.wallets[0].balance = shop.wallets[0].balance + 20;
-
     const sen = JSON.stringify(shop.wallets[0].balance )
 
   res.send(sen)

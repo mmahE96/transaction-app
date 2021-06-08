@@ -1,13 +1,14 @@
 const Ledger = require("./ledger");
 
 class Transaction {
-    constructor(id, amount, senderAddress, recipientAddress, state ){
+    constructor(id, amount, senderAddress, recipientAddress, state, approved ){
         
         this.id=id;
         this.amount=amount;
         this.senderAddress=senderAddress;
         this.recipientAddress=recipientAddress;
         this.state=state;
+        this.approved=approved;
     }
     
 
@@ -18,6 +19,7 @@ class Transaction {
         senderAddress:      ${this.senderAddress}
         recipientAddress:   ${this.recipientAddress}
         state:              ${this.state} 
+        approved:           ${this.approved}
         `
     }
 
@@ -36,7 +38,7 @@ class Transaction {
         
         const id = ledger.transactions[ledger.transactions.length - 1].id + 1;
 
-        return new this(id, amount, senderWallet.address, recipientAddress, "new")
+        return new this(id, amount, senderWallet.address, recipientAddress, "new", "pending")
     }
 
     }
