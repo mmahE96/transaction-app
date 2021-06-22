@@ -1,4 +1,4 @@
-const INITIAL_BALANCE = require ("./config")
+const INITIAL_BALANCE = require ("./config");
 const {v1:uuidv1} = require("uuid");
 
 

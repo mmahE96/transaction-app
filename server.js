@@ -54,7 +54,7 @@ app.post("/sendtokens", (req, res) => {
                         
 
         const transaction =new Transaction("1", amount, senderAddress, recipientAddress, "new", "pending");
-        shop.transactions.push(transaction)
+        shop.transactionRequests.push(transaction)
 
         res.send(shop)
     
@@ -66,6 +66,31 @@ app.post("/sendtokens", (req, res) => {
     //in ledger is shown only address, and amount not username
     
 })
+
+app.post("/getmyrequests", (req, res) => {
+
+    const address = req.body.address;
+    const requests = shop.getmyrequests(address);
+    if (requests){
+        res.send(requests)
+        
+}else{
+    res.send("You have zero requests")
+}        
+
+})
+
+app.post("/answer", (req, res) => {
+
+    const {id, answer} = req.body;    
+    const request = shop.answer(id, answer)
+   res.send(request);    
+
+       
+
+})
+
+
 
 
 

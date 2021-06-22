@@ -1,16 +1,17 @@
+const { request } = require("express");
 const Transaction = require("./transaction");
 
 
 class Ledger {
     constructor(){
         this.wallets=[];
-        this.transactions=[];              
+        this.transactionRequests=[];              
     }
 
     toString(){
         return `Ledger:
         Wallets:        ${this.wallets}
-        Transactions:   ${this.transactions}
+        Transactions requests:   ${this.transactionRequests}
         `
     }
 
@@ -32,15 +33,15 @@ class Ledger {
         
         if (found && founds){
             if(found.balance>= tokens){
-            return true; 
+                return true; 
+            }else{
+                return false;    
+            }       
         }else{
-        return false;    
-    }       
-        }else{
-            return false
+            return false;
         }
 
-    }
+        }
 
     sendTokens(amount, senderAddress, recipientAddress){
         let tokens = Number(amount);
@@ -61,9 +62,31 @@ class Ledger {
         }) 
         
     }   
+
+    getmyrequests(address){
+
+        const requests = this.transactionRequests.filter(element => element.recipientAddress==address)
+        return requests;
+    }
+
+    answer(id, answer){
+        this.transactionRequests.forEach(element => {
+            if(element.id==id){
+                element.approved = answer;
+                element.state = "processed";
+            }    
+        
+        })
+
+       const all = this.transactionRequests.filter(element => element.approved==true);
+       return all;
+        
+        
+        
+    }
     
     getPending(address){
-        const pTransactions = this.transactions.filter(element => element.address==address)
+        const pTransactions = this.transactionRequests.filter(element => element.address==address)
         return pTransactions;
     }
 
