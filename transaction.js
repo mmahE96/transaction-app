@@ -1,8 +1,5 @@
 const Ledger = require("./ledger");
 
-//function countDown(){
-     //napraviti funkciju koja ce odbrojavati 2h unazad, kada odbroji, promjeniti state u expired
-//}
 
 class Transaction {
     constructor(id,
@@ -38,16 +35,6 @@ class Transaction {
         expire:             ${this.expire}
         `
     }
-
-    // expire treba da prikazuje koliko vremena je ostalo do isteka 
-    // transakcije i onda postaje false(approval) ako se ne odobri od admina i usera
-
-    //adminApproval daje samo admin
-
-    // approved postaje true kada korisnik za be prihvati svoju transakciju
-
-    //state postaje approved ako je approved i adminApproval ture
-
     
 
     static firstTransaction(){
